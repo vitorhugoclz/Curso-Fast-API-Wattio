@@ -1,6 +1,5 @@
-from fastapi import FastAPI, status
-from typing import List, Optional
-from pydantic import BaseModel
+from fastapi import FastAPI
+from typing import Optional
 
 app = FastAPI()
 
