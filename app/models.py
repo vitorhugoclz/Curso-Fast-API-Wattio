@@ -26,7 +26,7 @@ class UnidadeConsumidora(Base):
 
     usuario_id = Column(Integer, ForeignKey("usuario.id"))
     usuario = relationship("Usuario", back_populates="unidades_consumidoras")
-
+    faturas_clientes = relationship("FaturaCliente", back_populates="unidade_consumidora")
 
 class FaturaCliente(Base):
     __tablename__ = "fatura_cliente"
@@ -38,3 +38,6 @@ class FaturaCliente(Base):
     data_leitura = Column(Date)
     data_vencimento = Column(Date)
     energia_consumida = Column(Integer)
+
+    unidade_consumidora_id = Column(Integer, ForeignKey("unidade_consumidora.id"))
+    unidade_consumidora = relationship("UnidadeConsumidora", back_populates="faturas_clientes")

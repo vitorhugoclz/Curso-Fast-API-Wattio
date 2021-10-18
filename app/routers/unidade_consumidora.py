@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
-from app.schemas import UnidadeConsumidora, UnidadeConsumidoraOpcional, UnidadeConsumidoraReposta
+from app.schemas import UnidadeConsumidora, UnidadeConsumidoraOpcional, UnidadeConsumidoraReposta, FaturaClienteOpcional
 from sqlalchemy.orm.session import Session
 from app.database import get_db
 from app import models
@@ -17,6 +17,17 @@ def get_id(id:int, db: Session = Depends(get_db)):
     if not unidade:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
     return unidade.__dict__
+
+@router.get("/{id}/faturas_clientes", status_code=status.HTTP_200_OK, response_model=List[FaturaClienteOpcional])
+def get_faturas_clientes(id:int, db: Session = Depends(get_db)):
+    unidade = db.query(models.UnidadeConsumidora).filter(models.UnidadeConsumidora.id == id).first()
+    if not unidade:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
+    if not unidade.faturas_clientes:
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Unidade Consumidora não encontrada")
+    
+    faturas_clientes = unidade.faturas_clientes
+    return [fatura.__dict__ for fatura in faturas_clientes]
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=UnidadeConsumidoraReposta)
 def post(unidade: UnidadeConsumidora, db: Session = Depends(get_db)):

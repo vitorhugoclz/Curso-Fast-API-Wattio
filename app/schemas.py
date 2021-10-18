@@ -47,7 +47,7 @@ class FaturaCliente(BaseModel):
     data_leitura: date
     data_vencimento: date
     energia_consumida: int
-
+    unidade_consumidora_id: int
 class FaturaClienteResposta(FaturaCliente):
     id: int
 
@@ -58,3 +58,4 @@ class FaturaClienteOpcional(BaseModel):
     data_leitura: Optional[date]
     data_vencimento: Optional[date]
     energia_consumida: Optional[int] 
+    unidade_consumidora_id: Optional[int] 
