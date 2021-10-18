@@ -24,6 +24,7 @@ class UnidadeConsumidora(BaseModel):
     bairro: str
     rua: str
     numero: int
+    usuario_id: int
 
 
 class UnidadeConsumidoraReposta(UnidadeConsumidora):
@@ -37,7 +38,7 @@ class UnidadeConsumidoraOpcional(BaseModel):
     bairro: Optional[str]
     rua: Optional[str]
     numero: Optional[int]
-
+    usuario_id: int
 
 class FaturaCliente(BaseModel):
     valor_consumo: float

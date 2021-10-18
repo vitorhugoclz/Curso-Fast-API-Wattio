@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Date
+from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey
 from .database import Base
+from sqlalchemy.orm import relationship
 
 class Usuario(Base):
     __tablename__ = "usuario"
@@ -7,6 +8,9 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True)
     password = Column(String)
+
+    unidades_consumidoras = relationship("UnidadeConsumidora", back_populates="usuario")
+
 
 class UnidadeConsumidora(Base):
     __tablename__ = "unidade_consumidora"
@@ -19,6 +23,11 @@ class UnidadeConsumidora(Base):
     bairro = Column(String)
     rua = Column(String)
     numero = Column(Integer)
+
+    usuario_id = Column(Integer, ForeignKey("usuario.id"))
+    usuario = relationship("Usuario", back_populates="unidades_consumidoras")
+
+
 class FaturaCliente(Base):
     __tablename__ = "fatura_cliente"
 

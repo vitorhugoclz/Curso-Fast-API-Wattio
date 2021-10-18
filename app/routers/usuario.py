@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session
 from app import models
 from app.database import get_db
 
-from app.schemas import UsarioOpcional, Usuario, UsuarioResposta
+from app.schemas import UsarioOpcional, Usuario, UsuarioResposta, UnidadeConsumidoraReposta
 
 router = APIRouter()
 
@@ -18,6 +18,16 @@ def get_id(id:int, db: Session = Depends(get_db)):
     if not usuario:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
     return usuario.__dict__
+
+@router.get("/{id}/unidades_consumidoras", status_code=status.HTTP_200_OK, response_model=List[UnidadeConsumidoraReposta])
+def get_unidades_consumidoras(id:int, db: Session = Depends(get_db)):
+    usuario = db.query(models.Usuario).filter(models.Usuario.id == id).first()
+    if not usuario:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
+    unidades_consumidoras = usuario.unidades_consumidoras
+    if not unidades_consumidoras:
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Usuario não possui unidades consumidoras")
+    return [unidade.__dict__ for unidade in unidades_consumidoras]
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=UsuarioResposta)
 def post(usuario: Usuario, db: Session = Depends(get_db)):
