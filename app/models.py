@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Float, Date
 from .database import Base
 
 class Usuario(Base):
@@ -19,3 +19,13 @@ class UnidadeConsumidora(Base):
     bairro = Column(String)
     rua = Column(String)
     numero = Column(Integer)
+class FaturaCliente(Base):
+    __tablename__ = "fatura_cliente"
+
+    id = Column(Integer, primary_key=True, index=True)
+    valor_consumo = Column(Float)
+    nome_titular = Column(String)
+    data_emissao = Column(Date)
+    data_leitura = Column(Date)
+    data_vencimento = Column(Date)
+    energia_consumida = Column(Integer)

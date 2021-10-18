@@ -15,7 +15,7 @@ def get(db: Session = Depends(get_db)):
 def get_id(id:int, db: Session = Depends(get_db)):
     unidade = db.query(models.UnidadeConsumidora).filter(models.UnidadeConsumidora.id == id).first()
     if not unidade:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
     return unidade.__dict__
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=UnidadeConsumidoraReposta)
@@ -30,7 +30,7 @@ def post(unidade: UnidadeConsumidora, db: Session = Depends(get_db)):
 def put(id:int, unidade:UnidadeConsumidora, db: Session = Depends(get_db)):
     unidade_db = db.query(models.UnidadeConsumidora).filter(models.UnidadeConsumidora.id == id)
     if not unidade_db.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
     unidade_db.update(unidade.__dict__)
     db.commit()
     return unidade_db.first().__dict__
@@ -39,7 +39,7 @@ def put(id:int, unidade:UnidadeConsumidora, db: Session = Depends(get_db)):
 def patch(id:int, unidade:UnidadeConsumidoraOpcional, db: Session = Depends(get_db)):
     unidade_db = db.query(models.UnidadeConsumidora).filter(models.UnidadeConsumidora.id == id)
     if not unidade_db.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
     usuario_dict = {}
     for key in unidade.__dict__.keys():
         if unidade.__dict__.get(key) or isinstance(unidade.__dict__.get(key), int):
@@ -52,8 +52,8 @@ def patch(id:int, unidade:UnidadeConsumidoraOpcional, db: Session = Depends(get_
 def delete(id:int, db: Session = Depends(get_db)):
     unidade_db = db.query(models.UnidadeConsumidora).filter(models.UnidadeConsumidora.id == id)
     if not unidade_db.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrado")
-    usuario_dict = unidade_db.first().__dict__
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unidade Consumidora não encontrada")
+    unidade_dict = unidade_db.first().__dict__
     unidade_db.delete()
     db.commit()
-    return usuario_dict
+    return unidade_dict
