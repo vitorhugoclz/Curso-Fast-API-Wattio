@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm.session import Session
 from app import models
 from app.database import get_db
+from app.hash import Hash
 
 from app.schemas import UsarioOpcional, Usuario, UsuarioResposta, UnidadeConsumidoraReposta
 
@@ -31,6 +32,7 @@ def get_unidades_consumidoras(id:int, db: Session = Depends(get_db)):
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=UsuarioResposta)
 def post(usuario: Usuario, db: Session = Depends(get_db)):
+    usuario.password = Hash.password_hash(usuario.password)
     db_item = models.Usuario(**usuario.dict())
     db.add(db_item)
     db.commit()
