@@ -1,6 +1,6 @@
 # Como Executar projeto
 
-crie um ambiente [https://docs.python.org/pt-br/3/library/venv.html](virtual python) e inicializa. Após inicializar o ambiente instale as dependencias contidas em 
+crie um [ambiente virtual python](https://docs.python.org/pt-br/3/library/venv.html) e o inicialize. Após inicializar o ambiente instale as dependencias contidas em 
 `requirements.txt` com comando abaixo
 
 ```pip install -r requirements.txt```
